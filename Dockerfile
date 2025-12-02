@@ -11,7 +11,7 @@ RUN a2enmod rewrite
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # 5. ***CRITICAL LINE***: Copy all files from your 'php' subfolder into the server's web root
-COPY php/ /var/www/html/
+COPY php_files/ /var/www/html/
 
 # 6. Set the necessary permissions for the web root
 RUN chown -R www-data:www-data /var/www/html
