@@ -1,62 +1,53 @@
 <?php
-// Set headers for JSON response and CORS
+require_once 'config.php';
+
+// Set response header to application/json
 header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: *"); 
-header("Access-Control-Allow-Methods: GET, OPTIONS"); // Allow GET requests
-header("Access-Control-Allow-Headers: Content-Type");
 
-// Handle preflight OPTIONS request
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
-
-// Include the configuration file for database connection
-require_once 'config.php'; 
-
-// Check if it is a GET request
+// Check for GET request method
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
-    http_response_code(405); // Method Not Allowed
-    echo json_encode(['status' => 'error', 'message' => 'Only GET method is allowed.']);
-    exit();
+    http_response_code(405);
+    echo json_encode(['status' => 'error', 'message' => 'Method not allowed.']);
+    exit;
 }
 
-// --- 1. Database Operation ---
 try {
-    $conn = connectDB(); 
+    $conn = connectDB();
 
-    // SQL Query: Select all books that have an inventoryCount greater than 0
-    $sql = "SELECT id, title, ISBN, price, rentalStatus, imageURL, altText, inventoryCount FROM BOOKS WHERE inventoryCount > 0 ORDER BY title ASC";
-            
-    $result = $conn->query($sql);
+    // Select all fields from the BOOKS table
+    // We expect the ID to be an integer now.
+    $sql = "SELECT id, title, ISBN, price, rentalStatus, imageURL, altText, inventoryCount FROM BOOKS ORDER BY title ASC";
     
-    $books = [];
-    if ($result->num_rows > 0) {
-        // Fetch all rows as an associative array
-        while($row = $result->fetch_assoc()) {
+    $stmt = $conn->prepare($sql);
+
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        $books = [];
+
+        // Fetch all rows into an array
+        while ($row = $result->fetch_assoc()) {
             $books[] = $row;
         }
+
+        http_response_code(200); // OK
+        echo json_encode([
+            'status' => 'success', 
+            'count' => count($books),
+            'books' => $books
+        ]);
+        
+    } else {
+        http_response_code(500);
+        error_log("Database Error: " . $conn->error);
+        echo json_encode(['status' => 'error', 'message' => 'Failed to fetch books: ' . $conn->error]);
     }
 
-    // --- 2. Return Response ---
-    http_response_code(200); // OK
-    echo json_encode([
-        'status' => 'success',
-        'books' => $books,
-        'count' => count($books)
-    ]);
-
-    // Clean up
+    $stmt->close();
     $conn->close();
 
 } catch (Exception $e) {
-    // Catch connection errors or other exceptions
     http_response_code(500);
-    error_log("Get Books Error: " . $e->getMessage());
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'An internal server error occurred.',
-        'exception' => $e->getMessage()
-    ]);
+    error_log("General Error: " . $e->getMessage());
+    echo json_encode(['status' => 'error', 'message' => 'Server Error: ' . $e->getMessage()]);
 }
 ?>

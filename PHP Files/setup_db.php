@@ -1,24 +1,31 @@
 <?php
-// --- Database Setup Credentials (Must be a user with CREATE permissions) ---
-/*	define('DB_HOST', getenv('db_host')); //server
-    define('DB_USER', getenv('db_user')); //username
-    define('DB_PASS', getenv('db_pass')); //password
-    define('DB_NAME', 'book_rental_system'); //database  
-    define('DB_CHARSET', 'utf8mb4');                     
-*/
+// Script to set up ALL necessary tables for the book rental application (8 tables total).
+// Run this file ONCE in your browser: http://localhost/setup_db.php
 
 // Include the configuration file where DB_HOST, DB_USER, etc., are defined.
-// NOTE: Ensure these constants/defines are accessible in the global scope!
 require_once 'config.php';
 
-// --- SQL CREATE TABLE STATEMENTS ---
-// These statements define the structure of your database.
-$sql_statements = [
+// --- SQL DROP TABLE STATEMENTS ---
+// These are listed in dependency order to avoid foreign key errors during drop.
+$sql_drop_statements = [
+    "DROP TABLE IF EXISTS ORDER_BOOKS;",
+    "DROP TABLE IF EXISTS COURSE_BOOKS;",
+    "DROP TABLE IF EXISTS PAYMENTS;",
+    "DROP TABLE IF EXISTS ORDERS;",
+    "DROP TABLE IF EXISTS CARTS;",
+    "DROP TABLE IF EXISTS COURSES;",
+    "DROP TABLE IF EXISTS BOOKS;",
+    "DROP TABLE IF EXISTS USERS;" // Drop USERS last
+];
+
+
+// --- SQL CREATE TABLE STATEMENTS (ALL PRIMARY KEYS NOW INT AUTO_INCREMENT) ---
+$sql_create_statements = [
     // 1. USERS Table
     "CREATE TABLE IF NOT EXISTS USERS (
-        id CHAR(36) PRIMARY KEY, -- Using CHAR(36) for UUIDs
+        id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
         username VARCHAR(100) NOT NULL UNIQUE,
-        password_encrypted CHAR(60) NOT NULL, -- Recommended for bcrypt hashes
+        password_hash CHAR(60) NOT NULL,
         email VARCHAR(255) NOT NULL UNIQUE,
         role VARCHAR(50) NOT NULL DEFAULT 'customer',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -26,7 +33,7 @@ $sql_statements = [
     
     // 2. BOOKS Table
     "CREATE TABLE IF NOT EXISTS BOOKS (
-        id CHAR(36) PRIMARY KEY,
+        id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
         title VARCHAR(255) NOT NULL,
         ISBN CHAR(13) UNIQUE,
         price DECIMAL(10, 2) NOT NULL,
@@ -34,83 +41,85 @@ $sql_statements = [
         imageURL VARCHAR(255),
         altText VARCHAR(255),
         inventoryCount INT DEFAULT 0,
-        managedBy CHAR(36)
+        managedBy CHAR(36) -- This field remains CHAR(36) for external tracking purposes
     ) ENGINE=InnoDB;",
     
-    // 3. ORDERS Table
+    // 3. ORDERS Table (ID changed to INT AUTO_INCREMENT)
     "CREATE TABLE IF NOT EXISTS ORDERS (
-        id CHAR(36) PRIMARY KEY,
-        userID CHAR(36) NOT NULL,
+        id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        userID INT(11) UNSIGNED NOT NULL, 
         orderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         totalAmount DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
         status VARCHAR(50) NOT NULL DEFAULT 'pending',
-        -- Foreign Key: Links to the USERS table
         FOREIGN KEY (userID) REFERENCES USERS(id) ON DELETE CASCADE
     ) ENGINE=InnoDB;",
     
-    // 4. CARTS Table
+    // 4. CARTS Table (ID changed to INT AUTO_INCREMENT)
     "CREATE TABLE IF NOT EXISTS CARTS (
-        id CHAR(36) PRIMARY KEY,
-        userID CHAR(36) NOT NULL UNIQUE, -- Only one active cart per user
+        id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        userID INT(11) UNSIGNED NOT NULL UNIQUE,
         status VARCHAR(50) NOT NULL DEFAULT 'active',
         FOREIGN KEY (userID) REFERENCES USERS(id) ON DELETE CASCADE
     ) ENGINE=InnoDB;",
     
-    // 5. COURSES Table
+    // 5. COURSES Table (ID changed to INT AUTO_INCREMENT)
     "CREATE TABLE IF NOT EXISTS COURSES (
-        id CHAR(36) PRIMARY KEY,
-        courseName VARCHAR(255) NOT NULL UNIQUE,
-        professor VARCHAR(100),
+        id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,             
+        code VARCHAR(50) NOT NULL UNIQUE,       
+        instructor VARCHAR(100),                
         semester VARCHAR(50)
     ) ENGINE=InnoDB;",
     
-    // 6. PAYMENTS Table
+    // 6. PAYMENTS Table (ID changed to INT AUTO_INCREMENT)
     "CREATE TABLE IF NOT EXISTS PAYMENTS (
-        id CHAR(36) PRIMARY KEY,
-        orderID CHAR(36) NOT NULL,
+        id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        orderID INT(11) UNSIGNED NOT NULL,
         type VARCHAR(50) NOT NULL,
         transactionData TEXT,
         payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (orderID) REFERENCES ORDERS(id) ON DELETE CASCADE
     ) ENGINE=InnoDB;",
     
-    // 7. ORDER_BOOKS (Junction/Detail Table for Many-to-Many: Orders <-> Books)
+    // 7. ORDER_BOOKS (Composite Key, no separate ID)
     "CREATE TABLE IF NOT EXISTS ORDER_BOOKS (
-        id CHAR(36) PRIMARY KEY,
-        orderID CHAR(36) NOT NULL,
-        bookID CHAR(36) NOT NULL,
+        orderID INT(11) UNSIGNED NOT NULL,
+        bookID INT(11) UNSIGNED NOT NULL,
         quantity INT NOT NULL DEFAULT 1,
+        PRIMARY KEY (orderID, bookID),
         FOREIGN KEY (orderID) REFERENCES ORDERS(id) ON DELETE CASCADE,
-        FOREIGN KEY (bookID) REFERENCES BOOKS(id) ON DELETE RESTRICT,
-        UNIQUE KEY (orderID, bookID) 
+        FOREIGN KEY (bookID) REFERENCES BOOKS(id) ON DELETE RESTRICT
     ) ENGINE=InnoDB;",
     
-    // 8. COURSE_BOOKS (Junction/Detail Table for Many-to-Many: Courses <-> Books)
+    // 8. COURSE_BOOKS (Composite Key, no separate ID)
     "CREATE TABLE IF NOT EXISTS COURSE_BOOKS (
-        id CHAR(36) PRIMARY KEY,
-        courseID CHAR(36) NOT NULL,
-        bookID CHAR(36) NOT NULL,
+        courseID INT(11) UNSIGNED NOT NULL,
+        bookID INT(11) UNSIGNED NOT NULL,
+        PRIMARY KEY (courseID, bookID),
         FOREIGN KEY (courseID) REFERENCES COURSES(id) ON DELETE CASCADE,
-        FOREIGN KEY (bookID) REFERENCES BOOKS(id) ON DELETE RESTRICT,
-        UNIQUE KEY (courseID, bookID)
+        FOREIGN KEY (bookID) REFERENCES BOOKS(id) ON DELETE RESTRICT
     ) ENGINE=InnoDB;"
 ];
 
-// --- Execution Logic (No need to edit below here) ---
-function runSetup($sql_statements) {
+// --- Execution Logic (Updated to handle DROP and CREATE) ---
+function runSetup($sql_drop_statements, $sql_create_statements) {
+    // Check if DB constants are defined
+    if (!defined('DB_HOST') || !defined('DB_USER') || !defined('DB_PASS') || !defined('DB_NAME')) {
+        die("Configuration error: DB constants not defined in config.php.");
+    }
+    
     // 1. Connect to the MySQL server (WITHOUT specifying a database name)
-    // NOTE: DB_USER must have CREATE DATABASE permissions.
     $conn_server = @mysqli_connect(DB_HOST, DB_USER, DB_PASS);
-
     if (!$conn_server) {
         error_log("Setup Connection Error: " . mysqli_connect_error());
         die("Failed to connect to MySQL Server for setup: " . mysqli_connect_error());
     }
 
     $db_name = DB_NAME;
+    $conn_db = null;
 
     try {
-        // 2. Create the target database
+        // Create the target database (if needed)
         $create_db_sql = "CREATE DATABASE IF NOT EXISTS " . $db_name . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
         if (mysqli_query($conn_server, $create_db_sql)) {
             echo "Database **{$db_name}** checked/created successfully.<br>";
@@ -118,35 +127,50 @@ function runSetup($sql_statements) {
             throw new Exception("Error creating database: " . mysqli_error($conn_server));
         }
 
-        // Close the server connection
         mysqli_close($conn_server);
 
-        // 3. Re-connect, specifying the newly created database
+        // 2. Re-connect, specifying the target database
         $conn_db = @mysqli_connect(DB_HOST, DB_USER, DB_PASS, $db_name);
         if (!$conn_db) {
-            throw new Exception("Failed to connect to the new database: " . mysqli_connect_error());
+            throw new Exception("Failed to connect to the database: " . mysqli_connect_error());
         }
 
+        // 3. Drop all tables for clean schema build
+        echo "<br>--- Dropping existing tables... ---<br>";
+        foreach ($sql_drop_statements as $sql) {
+            if (mysqli_query($conn_db, $sql)) {
+                $tableName = strtoupper(preg_match('/DROP TABLE IF EXISTS (\w+)/', $sql, $matches) ? $matches[1] : 'Unknown Table');
+                echo "Dropped: **{$tableName}**<br>";
+            } else {
+                // Log non-fatal errors (e.g., table didn't exist)
+                error_log("Non-fatal DROP error for SQL: {$sql} - " . mysqli_error($conn_db));
+            }
+        }
+        
         // 4. Run all table creation statements
+        echo "<br>--- Creating new tables... ---<br>";
         $success_count = 0;
-        foreach ($sql_statements as $sql) {
+        foreach ($sql_create_statements as $sql) {
             if (mysqli_query($conn_db, $sql)) {
                 $tableName = strtoupper(preg_match('/CREATE TABLE IF NOT EXISTS (\w+)/', $sql, $matches) ? $matches[1] : 'Unknown Table');
-                echo "Table created/checked: **{$tableName}**<br>";
+                echo "Table created: **{$tableName}**<br>";
                 $success_count++;
             } else {
-                throw new Exception("Error creating table: " . mysqli_error($conn_db) . "\nSQL: " . $sql);
+                throw new Exception("Fatal Error creating table: " . mysqli_error($conn_db) . "\nSQL: " . $sql);
             }
         }
         
         mysqli_close($conn_db);
-        echo "<br>🎉 **Database setup complete!** {$success_count} tables were created/checked.<br>";
+        echo "<br>🎉 **Database setup complete!** All {$success_count} tables were rebuilt with the consistent integer ID schema.<br>";
 
     } catch (Exception $e) {
+        if ($conn_db) {
+             mysqli_close($conn_db);
+        }
         error_log("Database Setup Fatal Error: " . $e->getMessage());
         die("Fatal Setup Error: " . $e->getMessage());
     }
 }
 
-runSetup($sql_statements);
+runSetup($sql_drop_statements, $sql_create_statements);
 ?>
