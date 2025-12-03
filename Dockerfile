@@ -1,30 +1,41 @@
-# 1. Use an official PHP FPM image (FPM handles PHP processing)
-FROM php:8.2-fpm
+# Use the official Debian-based PHP image with FPM
+FROM php:8.2-fpm-bullseye
 
-# 2. Install necessary system dependencies and PHP extensions for MySQL
-RUN apt-get update && \
-    apt-get install -y nginx && \
-    docker-php-ext-install mysqli pdo pdo_mysql && \
-    rm -rf /var/lib/apt/lists/*
+# 1. Install necessary dependencies (Nginx and basic tools)
+RUN apt-get update && apt-get install -y \
+    nginx \
+    curl \
+    nano \
+    # Install MySQL/MariaDB client tools for utility/debugging if needed
+    mariadb-client \
+    # Install PHP extensions for database connectivity
+    && docker-php-ext-install mysqli pdo pdo_mysql \
+    # Clean up APT lists to reduce image size
+    && rm -rf /var/lib/apt/lists/*
 
-# 3. Remove default Nginx site config
-RUN rm /etc/nginx/conf.d/default.conf
-
-# 4. Copy the custom Nginx configuration file from the 'php_files' directory
-COPY php_files/nginx.conf /etc/nginx/conf.d/default.conf
-
-# 5. Copy the custom php-fpm configuration file from 'php_files' (required by platform)
+# 2. Configure PHP-FPM: Copy the custom www.conf pool configuration
+# Source: ./php_files/php-fpm.conf
+# Destination: The standard PHP-FPM configuration directory
 COPY php_files/php-fpm.conf /etc/php/8.2/fpm/pool.d/www.conf
 
-# 6. Set necessary permissions for the web root
-RUN mkdir -p /var/www/html && chown -R www-data:www-data /var/www/html
+# 3. Configure Nginx: Copy the custom server block configuration
+# We must ensure the destination directory exists before copying
+RUN mkdir -p /etc/nginx/conf.d/
+# Source: ./php_files/nginx.conf
+# Destination: The standard Nginx configuration file
+COPY php_files/nginx.conf /etc/nginx/conf.d/default.conf
 
-# 7. Copy all your application files from the 'php_files' subfolder into the server's web root
-# This path now includes the config files, which is fine.
+# Remove the default Nginx configuration file if it exists, to prevent conflicts
+RUN rm -f /etc/nginx/sites-enabled/default
+
+# 4. Copy the entire PHP application source code
+# Source: ./php_files/
+# Destination: The webroot directory inside the container
 COPY php_files/ /var/www/html/
 
-# 8. Expose port 80 (Nginx default)
-EXPOSE 80
+# 5. Set working directory to the webroot
+WORKDIR /var/www/html
 
-# 9. Start PHP-FPM (for processing PHP) and Nginx (for serving HTTP requests)
+# 6. Define the start command using a script to run both Nginx and PHP-FPM
+# This runs PHP-FPM in the background and Nginx in the foreground.
 CMD service php8.2-fpm start && nginx -g "daemon off;"
