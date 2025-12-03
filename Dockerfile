@@ -1,53 +1,18 @@
-# The base image for the runtime environment is php:8.2-fpm-alpine.
-# This stage installs dependencies like Composer and necessary PHP extensions.
-FROM php:8.2-fpm-alpine AS builder
+# Use the official PHP image as the base
+FROM php:8.3-fpm-alpine
 
-# Install system dependencies needed for extensions (e.g., git, required build tools)
-RUN apk add --no-cache \
-    git \
-    make \
-    gcc \
-    g++ \
-    autoconf \
-    libxml2-dev \
-    freetype-dev \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    && rm -rf /var/cache/apk/*
-
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Install common PHP extensions (adjust as needed for your specific project)
-RUN docker-php-ext-install pdo_mysql opcache \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd
-
-# Set the working directory to the standard web root
+# Set the working directory inside the container's web root
 WORKDIR /var/www/html
 
-# Copy the application source code from your repository root (where the Dockerfile is)
-# The '.' means "everything in the current directory (your repo root)"
-# '/var/www/html' is the standard destination for web content
-COPY . /var/www/html
+# Install any necessary system tools if needed (e.g., extensions like pdo_mysql)
+# RUN docker-php-ext-install pdo_mysql
 
-# Install PHP dependencies using Composer
-RUN composer install --no-dev --optimize-autoloader
+# Copy the *contents* of your local 'php_files' folder 
+# directly into the container's web root (/var/www/html)
+COPY php_files/ .
 
-# --- Production Stage (NGINX) ---
-FROM nginx:alpine
+# Expose port 9000 for PHP-FPM
+EXPOSE 9000
 
-# Copy web files from the builder stage
-# /var/www/html contains your application code after composer ran
-COPY --from=builder /var/www/html /var/www/html
-
-# Copy the Nginx configuration file
-# This assumes you have an nginx.conf file in your repository root.
-# If you named it differently, update the source path below.
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose port 80 (standard HTTP)
-EXPOSE 80
-
-# The default command runs Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# The default command runs php-fpm
+CMD ["php-fpm"]
