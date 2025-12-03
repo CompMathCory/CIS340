@@ -9,7 +9,7 @@ WORKDIR /var/www/html
 
 # Copy the *contents* of your local 'php_files' folder 
 # directly into the container's web root (/var/www/html)
-COPY php_files/ .
+COPY . .
 
 # Expose port 9000 for PHP-FPM
 EXPOSE 9000
