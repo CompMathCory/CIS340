@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSSU Bookstore - Search</title>
+    </head>
+<body>
+    <div class="relative min-h-[calc(100vh-80px)] bg-gradient-to-br from-background via-secondary/20 to-background py-6 px-4 overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-[0.02] pointer-events-none">
+            <img src="lionMascot" alt="" class="w-full h-full object-contain">
+        </div>
+
+        <div class="container mx-auto max-w-6xl relative z-10">
+            <div class="mb-6 text-center">
+                <h1 class="text-primary mb-2">Find Your Course Materials</h1>
+                <p class="text-muted-foreground">Browse your courses or search our complete catalog - no external redirect needed</p>
+            </div>
+            
+            <div class="w-full">
+                <div class="grid w-full grid-cols-2 mb-6 bg-card shadow-sm border rounded-lg overflow-hidden">
+                    <button class="flex justify-center items-center gap-2 p-3 font-medium bg-background text-foreground hover:bg-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20v2.5a2.5 2.5 0 0 1-2.5 2.5H6.5A2.5 2.5 0 0 1 4 19.5z"/><path d="M20 17V5.5A2.5 2.5 0 0 0 17.5 3H6.5A2.5 2.5 0 0 0 4 5.5V17"/></svg>
+                        <span class="hidden sm:inline">My Courses</span>
+                        <span class="sm:hidden">Courses</span>
+                    </button>
+                    <button class="flex justify-center items-center gap-2 p-3 font-medium bg-primary text-primary-foreground">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                        <span>Advanced Search</span>
+                    </button>
+                </div>
+
+                <div>
+                    <div class="border rounded-xl bg-card shadow-md border-t-4 border-t-primary relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-bl-full"></div>
+                        <div class="p-6 space-y-2 relative z-10">
+                            <h2 class="flex items-center gap-2 text-xl font-semibold text-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-primary"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                                Advanced Search & Filter
+                            </h2>
+                            <p class="text-sm text-muted-foreground">Search by course code, professor name, or keyword, then apply filters to refine results</p>
+                        </div>
+                        <div class="p-6 pt-0 space-y-4">
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium leading-none">Search by:</label>
+                                <div class="flex flex-wrap gap-2">
+                                    <button class="h-8 px-3 text-xs font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90">
+                                        Keyword
+                                    </button>
+                                    <button class="h-8 px-3 text-xs font-medium rounded-md border hover:bg-muted">
+                                        Course Code
+                                    </button>
+                                    <button class="h-8 px-3 text-xs font-medium rounded-md border hover:bg-muted">
+                                        Professor
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <div class="relative flex-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                                    <input type="search" placeholder="e.g., calculus, chemistry, history" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10 focus:border-accent transition-colors">
+                                </div>
+                                <button class="h-10 px-4 py-2 text-sm font-medium text-primary-foreground rounded-md shadow-md hover:shadow-lg transition-all bg-primary hover:bg-primary/90">
+                                    Search
+                                </button>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-primary"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                                    <span class="text-sm">Apply Filters (click to combine multiple criteria):</span>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <p class="text-xs text-muted-foreground">Filter by Course:</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <button class="h-8 px-3 text-xs font-medium rounded-md border hover:bg-muted">CS101</button>
+                                        <button class="h-8 px-3 text-xs font-medium rounded-md border hover:bg-muted">MATH201</button>
+                                        <button class="h-8 px-3 text-xs font-medium rounded-md border hover:bg-muted">ENGL101</button>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <p class="text-xs text-muted-foreground">Filter by Condition:</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <button class="h-8 px-3 text-xs font-medium rounded-md border hover:bg-muted">New</button>
+                                        <button class="h-8 px-3 text-xs font-medium rounded-md border hover:bg-muted">Used</button>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <p class="text-xs text-muted-foreground">Filter by Type:</p>
+                                    <div class="flex flex-wrap gap-2">
+                                        <button class="h-8 px-3 text-xs font-medium rounded-md border hover:bg-muted">Required Only</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 border rounded-xl bg-primary/5 border-primary/20 shadow-md">
+                        <div class="p-4">
+                            <div class="flex items-start justify-between gap-4">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-primary"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                                        <span class="text-sm">Active Filters (1):</span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 bg-primary text-primary-foreground">
+                                            Condition: New
+                                            <button class="hover:bg-primary-foreground/20 rounded-full p-0.5" aria-label="Remove Condition: New filter">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <button class="h-9 px-3 py-2 text-sm font-medium rounded-md border flex-shrink-0 hover:bg-muted">
+                                    Clear All
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-xl font-semibold">Filtered Results</h2>
+                            <p class="text-muted-foreground">3 books found</p>
+                        </div>
+
+                        <div class="grid gap-4">
+                            <div class="border rounded-xl overflow-hidden hover:shadow-lg transition-all border-l-4 border-l-primary/20 hover:border-l-accent bg-card">
+                                <div class="p-0">
+                                    <div class="flex flex-col sm:flex-row gap-4 p-4">
+                                        <div class="flex-shrink-0 w-full sm:w-24 md:w-32">
+                                            <div class="relative aspect-[2/3] bg-muted rounded-lg overflow-hidden border border-border shadow-sm">
+                                                <img src="book-image-url-1" alt="Cover image for Introduction to Psychology" class="w-full h-full object-cover">
+                                            </div>
+                                        </div>
+
+                                        <div class="flex-1 space-y-2 min-w-0">
+                                            <div class="space-y-1">
+                                                <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-accent text-accent-foreground">
+                                                    Required
+                                                </span>
+                                                <h3 class="line-clamp-2 text-lg font-semibold">Introduction to Psychology: Mind, Brain, and Behavior</h3>
+                                                <p class="text-muted-foreground">Dr. Jane Doe</p>
+                                                <p class="text-xs text-muted-foreground">ISBN: 978-0-123456-78-9</p>
+                                            </div>
+
+                                            <div class="flex flex-col sm:flex-row gap-2 pt-2">
+                                                <div class="flex-1 space-y-2">
+                                                    <div class="flex items-center justify-between gap-2">
+                                                        <div>
+                                                            <p class="text-xs text-muted-foreground">Purchase</p>
+                                                            <p class="font-semibold text-primary">$99.99</p>
+                                                        </div>
+                                                        <button class="h-8 px-3 text-sm font-medium text-primary-foreground rounded-md shadow-sm hover:shadow-md transition-all bg-primary hover:bg-primary/90">
+                                                            Buy
+                                                        </button>
+                                                    </div>
+                                                    <div class="flex items-center justify-between gap-2">
+                                                        <div>
+                                                            <p class="text-xs text-muted-foreground">Rent</p>
+                                                            <p class="font-semibold text-accent">$39.99</p>
+                                                        </div>
+                                                        <button class="h-8 px-3 text-sm font-medium rounded-md border-2 border-accent/50 text-accent hover:bg-accent/10 hover:border-accent transition-all">
+                                                            Rent
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="border rounded-xl overflow-hidden hover:shadow-lg transition-all border-l-4 border-l-primary/20 hover:border-l-accent bg-card">
+                                <div class="p-0">
+                                    <div class="flex flex-col sm:flex-row gap-4 p-4">
+                                        <div class="flex-shrink-0 w-full sm:w-24 md:w-32">
+                                            <div class="relative aspect-[2/3] bg-muted rounded-lg overflow-hidden border border-border shadow-sm">
+                                                <img src="book-image-url-2" alt="Cover image for Calculus" class="w-full h-full object-cover">
+                                            </div>
+                                        </div>
+
+                                        <div class="flex-1 space-y-2 min-w-0">
+                                            <div class="space-y-1">
+                                                <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-secondary border-primary/20">
+                                                    Suggested
+                                                </span>
+                                                <h3 class="line-clamp-2 text-lg font-semibold">Calculus: Early Transcendentals</h3>
+                                                <p class="text-muted-foreground">James Stewart</p>
+                                                <p class="text-xs text-muted-foreground">ISBN: 978-1-234567-89-0</p>
+                                            </div>
+
+                                            <div class="flex flex-col sm:flex-row gap-2 pt-2">
+                                                <div class="flex-1 space-y-2">
+                                                    <div class="flex items-center justify-between gap-2">
+                                                        <div>
+                                                            <p class="text-xs text-muted-foreground">Purchase</p>
+                                                            <p class="font-semibold text-primary">$150.50</p>
+                                                        </div>
+                                                        <button class="h-8 px-3 text-sm font-medium text-primary-foreground rounded-md shadow-sm hover:shadow-md transition-all bg-primary hover:bg-primary/90">
+                                                            Buy
+                                                        </button>
+                                                    </div>
+                                                    <div class="flex items-center justify-between gap-2">
+                                                        <div>
+                                                            <p class="text-xs text-muted-foreground">Rent</p>
+                                                            <p class="font-semibold text-accent">$75.25</p>
+                                                        </div>
+                                                        <button class="h-8 px-3 text-sm font-medium rounded-md border-2 border-accent/50 text-accent hover:bg-accent/10 hover:border-accent transition-all">
+                                                            Rent
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

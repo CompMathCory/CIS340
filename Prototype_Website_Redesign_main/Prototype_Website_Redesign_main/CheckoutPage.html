@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSSU Bookstore - Secure Checkout</title>
+</head>
+<body>
+    <div class="relative min-h-[calc(100vh-80px)] bg-gradient-to-br from-primary/5 via-background to-accent/10 py-6 px-4 overflow-hidden">
+
+        <div class="absolute bottom-0 right-0 w-96 h-96 opacity-[0.03] pointer-events-none">
+            <img src="/assets/lion-mascot.png" alt="" class="w-full h-full object-contain" />
+        </div>
+
+        <div class="container mx-auto max-w-7xl relative z-10">
+            <div class="mb-6">
+                <h1 class="text-primary text-3xl font-bold">Secure Checkout</h1>
+                <p class="text-muted-foreground">Complete your order safely and securely</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="p-4 border rounded-lg">
+                        <div class="flex items-start gap-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><path d="M17 21v-8H7v8" /><path d="M7 3v5h8" /></svg>
+                            <div class="text-sm">
+                                Your cart items are saved. You can safely navigate away and return.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border rounded-xl bg-card shadow-md border-t-4 border-t-primary relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-bl-full"></div>
+                        <div class="p-6 space-y-2 relative z-10">
+                            <h2 class="text-primary text-xl font-semibold">Shipping Information</h2>
+                            <p class="text-sm text-muted-foreground">This information will be saved for future orders</p>
+                        </div>
+                        <div class="p-6 pt-0 space-y-4">
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label for="firstName" class="text-sm font-medium leading-none">First Name</label>
+                                    <input id="firstName" placeholder="John" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                                </div>
+                                <div class="space-y-2">
+                                    <label for="lastName" class="text-sm font-medium leading-none">Last Name</label>
+                                    <input id="lastName" placeholder="Doe" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label for="email" class="text-sm font-medium leading-none">Email</label>
+                                <input id="email" type="email" placeholder="student@university.edu" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="address" class="text-sm font-medium leading-none">Street Address</label>
+                                <input id="address" placeholder="123 Campus Drive" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                            </div>
+                            <div class="grid sm:grid-cols-3 gap-4">
+                                <div class="space-y-2"><label class="text-sm font-medium leading-none">City</label><input placeholder="City" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"></div>
+                                <div class="space-y-2"><label class="text-sm font-medium leading-none">State</label><input placeholder="ST" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"></div>
+                                <div class="space-y-2"><label class="text-sm font-medium leading-none">ZIP</label><input placeholder="12345" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border rounded-xl bg-card shadow-md border-t-4 border-t-accent relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-40 h-40 bg-primary/5 rounded-bl-full"></div>
+                        <div class="p-6 space-y-2 relative z-10">
+                            <h2 class="text-primary text-xl font-semibold">Payment Method</h2>
+                            <p class="text-sm text-muted-foreground">Select how you'd like to pay</p>
+                        </div>
+                        <div class="p-6 pt-0 space-y-6">
+                            <div class="p-4 rounded-lg bg-accent/10 border-2 border-accent shadow-md">
+                                <div class="flex items-start gap-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 text-accent"><circle cx="12" cy="12" r="10" /><line x1="12" x2="12" y1="8" y2="12" /><line x1="12" x2="12.01" y1="16" y2="16" /></svg>
+                                    <div class="text-sm">
+                                        <strong class="text-primary">Options:</strong>
+                                        <ul class="mt-2 text-sm list-disc list-inside">
+                                            <li>Student Account (Billed with Tuition)</li>
+                                            <li>Credit/Debit Card (Immediate)</li>
+                                            <li>Digital Wallet (Lion Bucks, Apple/Google Pay)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div class="flex items-start space-x-3 p-4 border-2 rounded-lg transition-all cursor-pointer hover:bg-green-50 border-green-500 bg-green-50">
+                                    <input type="radio" checked id="student-account" name="payment-method" class="mt-1 text-green-600 h-4 w-4">
+                                    <div class="flex-1">
+                                        <label for="student-account" class="flex items-center gap-2 cursor-pointer font-semibold">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-green-700"><path d="M21 7.5L12 12 3 7.5" /><path d="M12 21.5V12" /><path d="M21 7.5V17.5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7.5L12 3.5l9 4z" /></svg>
+                                            Student Account
+                                        </label>
+                                        <p class="text-sm text-muted-foreground mt-1">Add charges to your university account.</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start space-x-3 p-4 border-2 rounded-lg transition-all cursor-pointer hover:bg-green-50 border-border">
+                                    <input type="radio" id="credit-card" name="payment-method" class="mt-1 text-green-600 h-4 w-4">
+                                    <div class="flex-1">
+                                        <label for="credit-card" class="flex items-center gap-2 cursor-pointer font-semibold">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-green-700"><rect width="20" height="14" x="2" y="5" rx="2" /><line x1="2" x2="22" y1="10" y2="10" /></svg>
+                                            Credit or Debit Card
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start space-x-3 p-4 border-2 rounded-lg transition-all cursor-pointer hover:bg-green-50 border-border">
+                                    <input type="radio" id="digital-wallet" name="payment-method" class="mt-1 text-green-600 h-4 w-4">
+                                    <div class="flex-1">
+                                        <label for="digital-wallet" class="flex items-center gap-2 cursor-pointer font-semibold">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-green-700"><path d="M21 12H10a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2z" /><path d="M8 8V4h13a2 2 0 0 1 2 2v2" /><circle cx="5" cy="18" r="2" /></svg>
+                                            Digital Wallet
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-4 border rounded-lg">
+                                <div class="flex items-start gap-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                                    <div class="text-sm">
+                                        SSL Encrypted & Secure.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="w-full bg-green-600 hover:bg-green-700 shadow-lg text-lg h-12 text-white font-medium rounded-md disabled:opacity-50" disabled>
+                                Place Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-1">
+                    <div class="border rounded-xl bg-card shadow-lg border-t-4 border-t-primary relative overflow-hidden sticky top-24">
+                        <div class="p-6 space-y-2">
+                            <h2 class="flex items-center gap-2 text-xl font-semibold text-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><circle cx="8" cy="21" r="1" /><circle cx="19" cy="21" r="1" /><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.72a2 2 0 0 0 2-1.58L23 6H6" /></svg>
+                                Order Summary
+                            </h2>
+                        </div>
+                        <div class="p-6 pt-0 space-y-4">
+                            <div class="space-y-3 max-h-[300px] overflow-y-auto pr-2">
+                                <div class="flex justify-between items-start gap-2 p-3 rounded-lg border hover:bg-muted/50 transition-colors">
+                                    <div class="flex-1 min-w-0">
+                                        <p class="line-clamp-1 font-medium">Introduction to Psychology</p>
+                                        <p class="text-xs text-muted-foreground">Dr. Jane Doe</p>
+                                        <span class="inline-flex items-center rounded-full border px-1 py-0 text-[10px] font-semibold">
+                                            Purchase
+                                        </span>
+                                    </div>
+                                    <div class="flex flex-col items-end gap-1">
+                                        <span class="text-sm font-semibold">$99.99</span>
+                                        <button class="h-6 w-6 text-destructive hover:bg-destructive/10 rounded-md p-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /></svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-between items-start gap-2 p-3 rounded-lg border hover:bg-muted/50 transition-colors">
+                                    <div class="flex-1 min-w-0">
+                                        <p class="line-clamp-1 font-medium">Calculus: Early Transcendentals</p>
+                                        <p class="text-xs text-muted-foreground">James Stewart</p>
+                                        <span class="inline-flex items-center rounded-full border px-1 py-0 text-[10px] font-semibold">
+                                            Rental
+                                        </span>
+                                    </div>
+                                    <div class="flex flex-col items-end gap-1">
+                                        <span class="text-sm font-semibold">$75.25</span>
+                                        <button class="h-6 w-6 text-destructive hover:bg-destructive/10 rounded-md p-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="shrink-0 bg-border h-[1px] w-full"></div>
+
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between"><span>Subtotal</span><span>$175.24</span></div>
+                                <div class="flex justify-between"><span>Tax (8%)</span><span>$14.02</span></div>
+                                <div class="flex justify-between text-green-600 font-medium"><span>Shipping</span><span>FREE</span></div>
+
+                                <div class="shrink-0 bg-border h-[1px] w-full"></div>
+
+                                <div class="flex justify-between text-lg font-bold"><span>Total</span><span>$189.26</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
